@@ -36,10 +36,10 @@ Asegúrate de definir las siguientes variables de entorno:
 
 ## 🚀 Endpoints principales
 
-| Método | Endpoint             | Descripción                             |
-|--------|----------------------|-----------------------------------------|
-| POST   | `/api/auth/login`    | Inicia sesión y devuelve tokens         |
-| POST   | `/api/auth/register` | Registra un nuevo usuario               |
+| Método | Endpoint            | Descripción                    |
+|--------|---------------------|--------------------------------|
+| POST   | `/api/auth/login`   | Inicia sesión y devuelve access y refresh tokens |
+| POST   | `/api/auth/refresh` | Renueva el access token usando un refresh token|
 
 ---
 
