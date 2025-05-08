@@ -50,3 +50,41 @@ Asegúrate de definir las siguientes variables de entorno:
 - El token se debe enviar en la cabecera `Authorization: Bearer <token>`.
 
 ---
+
+## 🐳 Docker
+### 🛠️ 1. Construir la imagen
+Puedes ejecutar el microservicio utilizando Docker. Asegúrate de tener Docker instalado y ejecuta el siguiente comando en la raiz del proyecto:
+
+```bash
+docker build -t auth-microservice .
+```
+### 🚀 2. Ejecutar el contenedor
+Usa el siguiente comando para ejecutar el contenedor con las variables de entorno requeridas:
+```bash
+docker run -p 8181:8181 \
+  -e DB_URL=jdbc:postgresql://localhost:5432/authdb \
+  -e DB_USERNAME=postgres \
+  -e DB_PASSWORD=1234 \
+  -e JWT_SECRET=miSuperClaveSecreta123! \
+  -e JWT_EXPIRATION=900000 \
+  -e REFRESH_EXPIRATION=604800000 \
+  --name auth_service_container \
+  auth_service
+```
+### 📁 Opcional: Usar archivo .env
+Si prefieres no definir las variables de entorno manualmente, puedes crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+```env
+DB_URL=jdbc:postgresql://localhost:5432/authdb
+DB_USERNAME=postgres
+DB_PASSWORD=1234
+JWT_SECRET=miSuperClaveSecreta123!
+JWT_EXPIRATION=900000
+REFRESH_EXPIRATION=604800000
+```
+Luego, ejecuta el contenedor con el siguiente comando:
+
+```bash
+docker run --env-file .env -p 8181:8181 --name auth_service_container auth_service
+```
+---
