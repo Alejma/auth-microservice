@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
@@ -29,7 +30,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenService jwtService;
     private final UserDetailsService userDetailsService;
+    private static final AntPathMatcher pathMatcher = new AntPathMatcher();
 
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return pathMatcher.match("/v3/api-docs", path)
+                || pathMatcher.match("/v3/api-docs/**", path)
+                || pathMatcher.match("/swagger-ui/**", path)
+                || pathMatcher.match("/swagger-resources/**", path)
+                || pathMatcher.match("/webjars/**", path)
+                || pathMatcher.match("/configuration/**", path);
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
