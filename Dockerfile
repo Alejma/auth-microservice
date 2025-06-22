@@ -1,23 +1,26 @@
-# ✅ Etapa de construcción con Maven + JDK 21
+# ---------- Etapa de construcción ----------
 FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /app
 
-# Copia solo los archivos necesarios (pom.xml primero para optimizar cache)
+# Copiar el pom.xml primero para cachear dependencias
 COPY pom.xml .
 RUN mvn dependency:go-offline
 
-# Copia el código fuente
+# Copiar el resto del proyecto
 COPY src ./src
+
+# Compilar y empaquetar
 RUN mvn clean package -DskipTests
 
-# Etapa de ejecución
+# ---------- Etapa de ejecución ----------
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 
-# Copia el archivo JAR generado
-COPY --from=build /app/target/*.jar app.jar
+# Copiar el JAR compilado
+COPY --from=build /app/target/auth-microservice-0.0.1-SNAPSHOT.jar app.jar
 
-# Expone el puerto de la aplicación
+# Expone el puerto que usa tu app
 EXPOSE 8181
 
-# Comando para ejecutar la aplicación
+# Ejecuta el JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
