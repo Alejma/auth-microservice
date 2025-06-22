@@ -1,5 +1,5 @@
 # ✅ Etapa de construcción con Maven + JDK 21
-FROM maven:3.9.0-eclipse-temurin-21 AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 # Copia solo los archivos necesarios (pom.xml primero para optimizar cache)
 COPY pom.xml .
